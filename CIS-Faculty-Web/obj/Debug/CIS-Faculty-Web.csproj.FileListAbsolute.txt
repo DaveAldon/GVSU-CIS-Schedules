@@ -1,0 +1,10 @@
+/Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/obj/Debug/CIS-Faculty-Web.csproj.CoreCompileInputs.cache
+/Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/bin/CIS-Faculty-Web.dll
+/Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/bin/CIS-Faculty-Web.pdb
+/Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/bin/HtmlAgilityPack.dll
+/Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/bin/MySql.Data.dll
+/Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/bin/HtmlAgilityPack.pdb
+/Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/bin/HtmlAgilityPack.xml
+/Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/obj/Debug/CIS-Faculty-Web.csprojResolveAssemblyReference.cache
+/Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/obj/Debug/CIS-Faculty-Web.dll
+/Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/obj/Debug/CIS-Faculty-Web.pdb
