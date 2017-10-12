@@ -12,6 +12,89 @@ namespace FacultySchedules
 	public class GetData
 	{
 		string connectionParam = Globals.connectionParam;
+
+        /// <summary>
+        /// Internal retrieval of class names
+        /// </summary>
+        /// <returns>Class names</returns>
+        public List<string> getClassesFromDB()
+        {
+            List<string> finalResult = new List<string>();
+            MySqlConnection connection = null;
+            MySqlDataReader dataReader = null;
+
+            try
+            {
+                connection = new MySqlConnection(connectionParam);
+                connection.Open();
+                string stm = "SELECT " + Globals.ClassName + " FROM `" + Globals.ClassTableName + "` ORDER BY " + Globals.ClassName;
+                MySqlCommand replaceCmd = new MySqlCommand(stm, connection);
+                dataReader = replaceCmd.ExecuteReader();
+                int count = dataReader.FieldCount;
+
+                while (dataReader.Read())
+                {
+                    finalResult.Add(dataReader[0].ToString());
+                }
+            }
+
+			catch (MySqlException error)
+			{
+				errorHandle(error);
+			}
+
+			finally
+			{
+				if (dataReader != null)
+				{
+					dataReader.Close();
+				}
+
+				if (connection != null)
+				{
+					connection.Close();
+				}
+			}
+            return finalResult;
+		}
+
+		/// <summary>
+		/// Internal retrieval of class names
+		/// </summary>
+		/// <returns>Class names</returns>
+		public void dropDuplicatesFromClass()
+		{
+			MySqlConnection connection = null;
+			MySqlDataReader dataReader = null;
+
+			try
+			{
+				connection = new MySqlConnection(connectionParam);
+				connection.Open();
+				string stm = "SELECT " + Globals.ClassName + " FROM `" + Globals.ClassTableName + "`";
+				MySqlCommand replaceCmd = new MySqlCommand(stm, connection);
+				dataReader = replaceCmd.ExecuteReader();
+			}
+
+			catch (MySqlException error)
+			{
+				errorHandle(error);
+			}
+
+			finally
+			{
+				if (dataReader != null)
+				{
+					dataReader.Close();
+				}
+
+				if (connection != null)
+				{
+					connection.Close();
+				}
+			}
+		}
+
 		/// <summary>
 		/// Who is free from list query.
 		/// </summary>
@@ -19,7 +102,7 @@ namespace FacultySchedules
 		/// <param name="facultyTextNames">Faculty text names.</param>
 		public string whoIsFreeFromList(string facultyTextNames)
 		{
-			string[] facultyNames = facultyTextNames.Split(new string[] { "\n" }, StringSplitOptions.None);
+			string[] facultyNames = facultyTextNames.Split(new string[] { "\r\n" }, StringSplitOptions.None);
 			int facultyCount = facultyNames.Length - 1;
 			int existanceResult = 0;
 			List<string> resultList = new List<string>();

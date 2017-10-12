@@ -46,7 +46,7 @@ namespace FacultySchedules
 					{
 						if (item.InnerText.Contains(Globals.AnomalyToCheck))
 						{
-							Globals.eventAnomolies.Add(Globals.AnomalyForUserToSee);
+							//Globals.eventAnomolies.Add(Globals.AnomalyForUserToSee);
 							return;
 						}
 						else if (item.InnerText.Contains(Globals.dayList[0]) == false)
@@ -158,7 +158,7 @@ namespace FacultySchedules
 				giveDB.DBGather(weeksWorth, name);
 			}
 			else {
-				Globals.eventAnomolies.Add(Globals.MissingCaseAnomaly);
+				//Globals.eventAnomolies.Add(Globals.MissingCaseAnomaly);
 				return;
 			}
 		}

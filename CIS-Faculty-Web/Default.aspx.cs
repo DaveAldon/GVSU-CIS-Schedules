@@ -4,6 +4,8 @@ using System;
 using System.Web;
 using System.Web.UI;
 using FacultySchedules;
+using System.Collections.Generic;
+using System.Net;
 
 namespace CISFacultyWeb
 {
@@ -18,36 +20,52 @@ namespace CISFacultyWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            var classes = getDataInit.getClassesFromDB();
+            foreach (string x in classes) {
+                Globals.uniqueClassInput.Add(x);
+                classCombo.Items.Add(x);
+				classCombo3.Items.Add(x);
+			}
+			
+            allFacultyInit.findAndInsertAllNames();
+            foreach (string eachName in Globals.uniqueFacultyNames) //Goes through each faculty name in the database table
+            {
+                facultyListCombo.Items.Add(eachName); //Populate the faculty names combo lists
+                htmlScheduleCombo.Items.Add(eachName);
+                bigFacList.Items.Add(eachName);
+            }
+			
+            foreach (string eachTime in Globals.timeList) //Populate the time combo lists
+			{
+				timeCombo.Items.Add(eachTime);
+			}
         }
 
 		public void scrapeBtn_Click(object sender, EventArgs args)
         {
-			allFacultyInit.findAndInsertAllNames();
+            clearInit.dropTable(Globals.ClassTableName);
+			classCombo.Items.Clear();
+			classCombo3.Items.Clear();
+			facultyListCombo.Items.Clear();
+			htmlScheduleCombo.Items.Clear();
+			bigFacList.Items.Clear();
+		
 			foreach (string eachName in Globals.uniqueFacultyNames) //Goes through each faculty name in the database table
 			{
+				clearInit.dropTable(eachName); //Drop all of the faculty name tables to refresh the data
+                runInit.start(eachName); //Begins the main engine with the given name
 				facultyListCombo.Items.Add(eachName); //Populate the faculty names combo lists
 				htmlScheduleCombo.Items.Add(eachName);
 				bigFacList.Items.Add(eachName);
-				clearInit.dropTable(eachName); //Drop all of the faculty name tables to refresh the data
-				runInit.start(eachName); //Begins the main engine with the given name
-                break;
-			}
-			foreach (string eachClassName in Globals.uniqueClassInput) //Populate the class combo lists
-			{
-				classCombo.Items.Add(eachClassName);
-                classCombo3.Items.Add(eachClassName);
-				//classCombo2.AddItem(eachClassName);
 			}
 
-			foreach (string eachTime in Globals.timeList) //Populate the time combo lists
+			var classes = getDataInit.getClassesFromDB();
+			foreach (string x in classes)
 			{
-                timeCombo.Items.Add(eachTime);
+				Globals.uniqueClassInput.Add(x);
+				classCombo.Items.Add(x);
+				classCombo3.Items.Add(x);
 			}
-			facultyListCombo.DataBind();
-			htmlScheduleCombo.DataBind();
-			classCombo3.DataBind();
-			classCombo.DataBind();
         }
 
         public void findOut1Btn_Click(object sender, EventArgs args)//When does a faculty teach a specified class
@@ -127,8 +145,15 @@ namespace CISFacultyWeb
 		{
             if (listOfChosenText.Text.Contains(bigFacList.SelectedItem.Text))
 			{
-                listOfChosenText.Text = listOfChosenText.Text.Replace(bigFacList.SelectedItem.Text + "\n", string.Empty);
+                listOfChosenText.Text = listOfChosenText.Text.Replace(bigFacList.SelectedItem.Text + "\r\n", string.Empty);
 			}
+		}
+
+		public void view_Click(object sender, EventArgs args) //Removes a name from the customized list
+		{
+            webView.InnerHtml = "";
+            string html = new WebClient().DownloadString(specialFormatInit.splitNameGetURL(htmlScheduleCombo.SelectedItem.Text));
+			webView.InnerHtml = html;
 		}
     }
 }

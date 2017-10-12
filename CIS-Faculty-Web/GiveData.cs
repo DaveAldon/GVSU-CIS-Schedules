@@ -23,6 +23,7 @@ namespace FacultySchedules
 			string inputHour, inputEvent;
 			int inputRowSpan;
 			createTable(name);
+            createClassTable(Globals.ClassTableName);
 
 			//Seperates the string of data into pieces
 			for (int h = 0; h < Globals.hourSlots; h++)
@@ -38,10 +39,13 @@ namespace FacultySchedules
 						inputRowSpan = Convert.ToInt16(subStrings[3]);
 
 						insertIntoTable(Globals.dayList[inputDay], inputHour, inputEvent, inputRowSpan, name); //Insert the data into the database
-						Globals.uniqueClassInput.Add(inputEvent); //Place each unique event name into a global list
+                        Globals.uniqueClassInput.Add(inputEvent); //Place each unique event name into a global list
 					}
 					else continue;
 				}
+			}
+            foreach(string className in Globals.uniqueClassInput) {
+				insertIntoClassTable(className);
 			}
 		}
 
@@ -58,6 +62,42 @@ namespace FacultySchedules
 				connectionCreate = new MySqlConnection(connectionParam);
 				connectionCreate.Open();
 				string stm = "CREATE TABLE `" + name + "` (id int(50) NOT NULL AUTO_INCREMENT, " + Globals.DBFieldDay + " varchar(50), " + Globals.DBFieldHour + " varchar(50), " + Globals.DBFieldEvent + " varchar(50), " + Globals.DBFieldRowspan + " int (10), PRIMARY KEY (id))";
+				MySqlCommand createCmd = new MySqlCommand(stm, connectionCreate);
+				dataReaderCreate = createCmd.ExecuteReader();
+			}
+
+			catch (MySqlException error)
+			{
+				errorHandle(error);
+			}
+
+			finally //We need to close all of our connections once everything is retrieved
+			{
+				if (dataReaderCreate != null)
+				{
+					dataReaderCreate.Close();
+				}
+
+				if (connectionCreate != null)
+				{
+					connectionCreate.Close();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Creates a DB class table with the name provided.
+		/// </summary>
+		/// <param name="name">Name.</param>
+		public void createClassTable(string name)
+		{
+			MySqlConnection connectionCreate = null;
+			MySqlDataReader dataReaderCreate = null;
+			try
+			{
+				connectionCreate = new MySqlConnection(connectionParam);
+				connectionCreate.Open();
+                string stm = "CREATE TABLE `" + name + "` (id int(50) NOT NULL AUTO_INCREMENT, " + Globals.ClassName + " varchar(50), " + "UNIQUE (" + Globals.ClassName + "), PRIMARY KEY (id))";
 				MySqlCommand createCmd = new MySqlCommand(stm, connectionCreate);
 				dataReaderCreate = createCmd.ExecuteReader();
 			}
@@ -126,6 +166,46 @@ namespace FacultySchedules
 				}
 			}
 		}
+
+		/// <summary>
+		/// Inserts all passed data the into the given table.
+		/// </summary>
+		/// <param name="name">Name.</param>
+		public void insertIntoClassTable(string name)
+		{
+			MySqlConnection addConnection = null;
+			MySqlDataReader addDataReader = null;
+			try
+			{
+				addConnection = new MySqlConnection(connectionParam);
+				addConnection.Open();
+                string stm = "INSERT INTO `" + Globals.ClassTableName + "` (" + Globals.ClassName + ") VALUES(@name)";
+				MySqlCommand cmd = new MySqlCommand(stm, addConnection);
+
+				//Just a different method of customizing parameters! Makes changing things easier.
+				cmd.Parameters.AddWithValue("@name", name);
+				addDataReader = cmd.ExecuteReader();
+			}
+
+			catch (MySqlException error)
+			{
+				errorHandle(error);
+			}
+
+			finally
+			{
+				if (addDataReader != null)
+				{
+					addDataReader.Close();
+				}
+
+				if (addConnection != null)
+				{
+					addConnection.Close();
+				}
+			}
+		}
+
 
 		/// <summary>
 		/// Drops the given table.
