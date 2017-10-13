@@ -158,6 +158,7 @@ namespace FacultySchedules
 				giveDB.DBGather(weeksWorth, name);
 			}
 			else {
+                // Activate if we ever care at some point
 				//Globals.eventAnomolies.Add(Globals.MissingCaseAnomaly);
 				return;
 			}

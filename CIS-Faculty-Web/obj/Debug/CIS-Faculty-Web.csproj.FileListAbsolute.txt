@@ -7,3 +7,4 @@
 /Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/bin/HtmlAgilityPack.xml
 /Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/obj/Debug/CIS-Faculty-Web.dll
 /Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/obj/Debug/CIS-Faculty-Web.pdb
+/Users/davidcrawford/Documents/Github/CIS Website/CIS-Faculty-Web/obj/Debug/CIS-Faculty-Web.csprojResolveAssemblyReference.cache

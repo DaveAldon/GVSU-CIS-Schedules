@@ -3,7 +3,6 @@
 //
 
 using MySql.Data.MySqlClient;
-//using AppKit;
 using System.Collections.Generic;
 using System;
 
@@ -38,62 +37,25 @@ namespace FacultySchedules
                 }
             }
 
-			catch (MySqlException error)
-			{
-				errorHandle(error);
-			}
+            catch (MySqlException error)
+            {
+                errorHandle(error);
+            }
 
-			finally
-			{
-				if (dataReader != null)
-				{
-					dataReader.Close();
-				}
+            finally
+            {
+                if (dataReader != null)
+                {
+                    dataReader.Close();
+                }
 
-				if (connection != null)
-				{
-					connection.Close();
-				}
-			}
+                if (connection != null)
+                {
+                    connection.Close();
+                }
+            }
             return finalResult;
-		}
-
-		/// <summary>
-		/// Internal retrieval of class names
-		/// </summary>
-		/// <returns>Class names</returns>
-		public void dropDuplicatesFromClass()
-		{
-			MySqlConnection connection = null;
-			MySqlDataReader dataReader = null;
-
-			try
-			{
-				connection = new MySqlConnection(connectionParam);
-				connection.Open();
-				string stm = "SELECT " + Globals.ClassName + " FROM `" + Globals.ClassTableName + "`";
-				MySqlCommand replaceCmd = new MySqlCommand(stm, connection);
-				dataReader = replaceCmd.ExecuteReader();
-			}
-
-			catch (MySqlException error)
-			{
-				errorHandle(error);
-			}
-
-			finally
-			{
-				if (dataReader != null)
-				{
-					dataReader.Close();
-				}
-
-				if (connection != null)
-				{
-					connection.Close();
-				}
-			}
-		}
+        }
 
 		/// <summary>
 		/// Who is free from list query.

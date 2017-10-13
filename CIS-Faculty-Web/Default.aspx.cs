@@ -1,10 +1,7 @@
 ﻿//Created by David Crawford
 
 using System;
-using System.Web;
-using System.Web.UI;
 using FacultySchedules;
-using System.Collections.Generic;
 using System.Net;
 
 namespace CISFacultyWeb
@@ -20,43 +17,53 @@ namespace CISFacultyWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var classes = getDataInit.getClassesFromDB();
-            foreach (string x in classes) {
-                Globals.uniqueClassInput.Add(x);
-                classCombo.Items.Add(x);
-				classCombo3.Items.Add(x);
-			}
-			
-            allFacultyInit.findAndInsertAllNames();
-            foreach (string eachName in Globals.uniqueFacultyNames) //Goes through each faculty name in the database table
+            if (!IsPostBack)
             {
-                facultyListCombo.Items.Add(eachName); //Populate the faculty names combo lists
-                htmlScheduleCombo.Items.Add(eachName);
-                bigFacList.Items.Add(eachName);
+                var classes = getDataInit.getClassesFromDB();
+                foreach (string x in classes)
+                {
+                    Globals.uniqueClassInput.Add(x);
+                    classCombo.Items.Add(x);
+                    classCombo3.Items.Add(x);
+                }
+
+                allFacultyInit.findAndInsertAllNames();
+                foreach (string eachName in Globals.uniqueFacultyNames) //Goes through each faculty name in the database table
+                {
+                    facultyListCombo.Items.Add(eachName); //Populate the faculty names combo lists
+                    htmlScheduleCombo.Items.Add(eachName);
+                    bigFacList.Items.Add(eachName);
+                }
+
+                foreach (string eachTime in Globals.timeList) //Populate the time combo lists
+                {
+                    timeCombo.Items.Add(eachTime);
+                }
             }
-			
-            foreach (string eachTime in Globals.timeList) //Populate the time combo lists
-			{
-				timeCombo.Items.Add(eachTime);
-			}
         }
 
-		public void scrapeBtn_Click(object sender, EventArgs args)
-        {
-            clearInit.dropTable(Globals.ClassTableName);
+        public void clearUI() {
 			classCombo.Items.Clear();
 			classCombo3.Items.Clear();
 			facultyListCombo.Items.Clear();
 			htmlScheduleCombo.Items.Clear();
 			bigFacList.Items.Clear();
+            timeCombo.Items.Clear();
+            resultTextBox.Text = String.Empty;
+        }
+
+		public void scrapeBtn_Click(object sender, EventArgs args)
+        {
+            clearUI();
+            clearInit.dropTable(Globals.ClassTableName);
 		
 			foreach (string eachName in Globals.uniqueFacultyNames) //Goes through each faculty name in the database table
 			{
-				clearInit.dropTable(eachName); //Drop all of the faculty name tables to refresh the data
+                clearInit.dropTable(eachName); //Drop all of the faculty name tables to refresh the data
                 runInit.start(eachName); //Begins the main engine with the given name
-				facultyListCombo.Items.Add(eachName); //Populate the faculty names combo lists
-				htmlScheduleCombo.Items.Add(eachName);
-				bigFacList.Items.Add(eachName);
+                facultyListCombo.Items.Add(eachName); //Populate the faculty names combo lists
+                htmlScheduleCombo.Items.Add(eachName);
+                bigFacList.Items.Add(eachName);
 			}
 
 			var classes = getDataInit.getClassesFromDB();
@@ -65,6 +72,11 @@ namespace CISFacultyWeb
 				Globals.uniqueClassInput.Add(x);
 				classCombo.Items.Add(x);
 				classCombo3.Items.Add(x);
+			}
+			
+            foreach (string eachTime in Globals.timeList) //Populate the time combo lists
+			{
+				timeCombo.Items.Add(eachTime);
 			}
         }
 
