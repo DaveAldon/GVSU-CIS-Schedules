@@ -24,7 +24,7 @@
 				</div>
 			</div>
       <div id="result">
-				<h2>Result of Query</h2><asp:TextBox ID="resultTextBox" TextMode="MultiLine" Wrap="True" Height="500px" Width="100%" runat="server" AutoPostBack="false"/>
+				<h2>Result of Query</h2><asp:TextBox ID="resultTextBox" TextMode="MultiLine" Wrap="True" Height="500px" Width="95%" runat="server" AutoPostBack="false"/>
 			</div>
 			<div runat="server" id="webView"></div>
 	</form>
@@ -32,13 +32,21 @@
     <style TYPE="text/css">
 		html,body {
 			height:100%;
+			margin: 0;
+			padding: 0;
+		}
+		#form1 {
+			width: 100%;
 		}
 		#webView, #queries, #result {
 	    display:table-cell;
 	    height:100%;
 	    vertical-align:top;
+			border: 5px solid #c8e6f0;
+			margin: 10px;
 		}
 		#webView {
+			zoom: .75;
 			width: 33%;
 			background-color: grey;
 		}

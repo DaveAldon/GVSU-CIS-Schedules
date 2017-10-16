@@ -158,6 +158,7 @@ namespace CISFacultyWeb
             if (listOfChosenText.Text.Contains(bigFacList.SelectedItem.Text))
 			{
                 listOfChosenText.Text = listOfChosenText.Text.Replace(bigFacList.SelectedItem.Text + "\r\n", string.Empty);
+                listOfChosenText.DataBind();
 			}
 		}
 
